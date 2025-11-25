@@ -102,3 +102,19 @@ Lim Hock Chuan (Regional Management)
 
 There are 23 staff members working in Singapore.
 
+<!-- Length of All Employees Names: 128
+Length of Unique Names: 122
+Total number of employees from Singapore: 74
+Length of Repeated Names (in Singaopore employees): 6
+
+Repeated Names (in Singapore employees): ['Linda Tan', 'Marcus Sharma', 'James Poh', 'Sarah Wong', 'Chloe Ooi', 'Rajeev Lim'] -->
+
+Q0: Please retrieve the details for CFO and the names for staff working in Singapore. Count the number of Singapore staff. Show your calculation and provide your Python code you used to generate tyhe answer for the count.
+
+Q1: Please retrieve the details for CFO and the names for staff working in Singapore. Count the number of Singapore staff.
+
+Q2: Could you count the number of total employees in the phone directory? Show how you do the calculation.
+
+Q3: Count the number with key-value pairs "Country": "Singapore".
+
+Q4: List out all employees with key-value pairs "Country": "Singapore". Count the length of such key-value pairs cases.

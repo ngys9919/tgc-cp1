@@ -36,6 +36,8 @@ fi
 
 pip install --upgrade gradio google-genai dotenv
 pip install numpy faiss-cpu pypdf
+pip install pdfplumber
+
 # pip install google-generativeai 
 
 echo "All dependencies installed."

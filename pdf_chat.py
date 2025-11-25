@@ -1,6 +1,10 @@
 import gradio as gr
 from pypdf import PdfReader
-from gemini_utils_pdf import client, respond_text_in_system_language, translate_text, make_chunks, create_embeddings, build_faiss_index, retrieve, build_prompt, generate_answer, EMBED_MODEL, GEN_MODEL
+# from gemini_utils_pdf import client, respond_text_in_system_language, translate_text, make_chunks, create_embeddings, build_faiss_index, retrieve, build_prompt, build_prompt_json, generate_answer, EMBED_MODEL, GEN_MODEL, GEN_MODEL2
+from gemini_utils_pdf import client, respond_text_in_system_language, translate_text
+from gemini_utils_pdf import make_chunks, create_embeddings, build_faiss_index, retrieve, build_prompt, generate_answer, EMBED_MODEL, GEN_MODEL
+from gemini_utils_pdf import build_prompt_json, generate_answer_json, GEN_MODEL2
+import json
 # --- UI helpers and Gradio logic ---
 
 
@@ -81,6 +85,33 @@ def update_output(output_choice):
         output_selected = "Prompt1"
         display_output = "Chatbot Query"
         output_prompt = output_selected
+
+# json_file_selected = "heifinance_tables-formatted.json"
+# json_path_selected = "Phone Directory"
+# json_path = "./pdf-HeiFinance/" + str(json_path_selected) + "/" + str(json_file_selected)
+
+def load_json_tables(json_path: str | None = None):
+    json_file_selected = "heifinance_tables-formatted.json"
+    json_path_selected = "Phone Directory"
+    json_path = "./pdf-HeiFinance/" + str(json_path_selected) + "/" + str(json_file_selected)
+    # if json_path is None:
+    #     json_path = os.path.join(os.path.dirname(__file__), "heifinance_tables-formatted.json")
+    try:
+        with open(json_path, "r", encoding="utf-8") as f:
+            return json.load(f)
+    except FileNotFoundError:
+        return {"error": f"File not found: {json_path}"}
+    except Exception as e:
+        return {"error": str(e)}
+
+def json_model():
+    """
+    Gradio handler: read hei_tables.json and return its JSON object.
+    Returns:
+        dict: The loaded JSON data from heifinance_tables-formatted.json.
+    """
+    json_tables = load_json_tables()
+    return json_tables
 
 css_code = """
 .gradio-container button.primary {
@@ -228,14 +259,25 @@ def render_ui():
         # status = gr.Markdown("")        
         status = gr.Markdown("")
         current_file_status = gr.Markdown("")
-        
+
+        with gr.Tab("JSON Structure Scan"):
+            with gr.Row():
+                json_results = gr.JSON()
+                json_run = gr.Button("Run")
+                json_run.click(
+                    json_model,
+                    inputs=[],
+                    outputs=json_results,
+                    api_name="json_model"
+                )
 
         chatbot = gr.Chatbot(height=420, label="HeiFinance Chatbox")
         gr.Markdown("### Step 3: Please type your query in the Textbox below.")
         msg = gr.Textbox(label="Ask a question", placeholder="Type and press Enter", elem_classes="my-custom-class")
         gr.Markdown("### Step 4 (optional): To clear conversations, click 'Clear HeiFinance Chatbox' button.")
+        gr.Markdown("<h1 style='text-align: center; color: red; !important'>IMPORTANT NOTICE:</h1> <h2 style='text-align: center; color: blue; !important'>To clear error message, click 'Clear HeiFinance Chatbox OR Reset Error' button.</h2>")
         # my_interface.output_component = my_interface.input_components[0]  # Assuming the first input is the dropdown
-        clear_chatbox_btn = gr.Button("Clear HeiFinance Chatbox", elem_classes=["my-custom-class", "another-class"])
+        clear_chatbox_btn = gr.Button("Clear HeiFinance Chatbox OR Reset Error", elem_classes=["my-custom-class", "another-class"])
 
         # States
         st_chunks = gr.State([])
@@ -283,6 +325,16 @@ def render_ui():
 
 # def do_build(pdf_path, chunk_size, overlap, top_k):
 def do_build():
+    if (pdf_folder == "Phone Directory"):
+        json_file_selected = "heifinance_tables-formatted.json"
+        json_path_selected = "Phone Directory"
+        json_path = "./pdf-HeiFinance/" + str(json_path_selected) + "/" + str(json_file_selected)
+        message_json = f"You may start your query on {json_path_selected} now!"
+        # gr.Markdown(message_json)
+        current_file_status_json = f"Current loaded JSON file: {json_file_selected}."
+        # gr.Markdown(current_file_status_json)
+        return message_json, "1200", "0", int("4"), current_file_status_json
+    
     pdf_path = "./pdf-HeiFinance/" + str(pdf_selected)
 
     chunk_size = "1200"
@@ -325,14 +377,25 @@ def do_ask(message, history, chunks, index, top_k):
     if index is None or not chunks:
         raise gr.Error("Please build the index first.")
 
-    hits = retrieve(message, index, chunks, client, k=int(top_k), model_name=EMBED_MODEL)
-    contexts = [h[0] for h in hits]
-    prompt = build_prompt(message, contexts, output_prompt=output_prompt)
-    rag_answer = generate_answer(prompt, client, model_name=GEN_MODEL)
-    if language_selected == "Chinese":
-        answer = respond_text_in_system_language(rag_answer, client, system_language=language_selected, model_name=GEN_MODEL)
+    if (pdf_folder=="Phone Directory"):
+        prompt = build_prompt_json(message, output_prompt=output_prompt)
+        json_answer = generate_answer_json(prompt, client, model_name=GEN_MODEL2)
     else:
-        answer = rag_answer  
+        hits = retrieve(message, index, chunks, client, k=int(top_k), model_name=EMBED_MODEL)
+        contexts = [h[0] for h in hits]
+        prompt = build_prompt(message, contexts, output_prompt=output_prompt)
+        rag_answer = generate_answer(prompt, client, model_name=GEN_MODEL)
+    
+    if language_selected == "Chinese":
+        if (pdf_folder=="Phone Directory"):
+            answer = respond_text_in_system_language(json_answer, client, system_language=language_selected, model_name=GEN_MODEL)
+        else:
+            answer = respond_text_in_system_language(rag_answer, client, system_language=language_selected, model_name=GEN_MODEL)
+    else:
+        if (pdf_folder=="Phone Directory"):
+            answer = json_answer
+        else:
+            answer = rag_answer  
     # answer = respond_text_in_system_language(rag_answer, client, system_language=language_selected, model_name=GEN_MODEL)
     # translated_answer = translate_text(rag_answer, client, target_language=language_selected, model_name=GEN_MODEL)
 
