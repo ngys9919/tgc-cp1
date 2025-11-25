@@ -273,3 +273,12 @@ if __name__ == "__main__":
 
 # or for specific pages:
 # python extract_tables_robust.py "path/to/HeiFinance_Full_Directory_Complete.pdf" -p "1-3" -o hei_tables.json
+
+# For example:
+# python extract_tables_robust.py "pdf-HeiFinance/Phone Directory/HeiFinance_Full_Directory_Complete.pdf" -o hei_tables.json
+
+# Input File:
+# HeiFinance_Full_Directory_Complete.pdf
+
+# Output File:
+# hei_tables.json

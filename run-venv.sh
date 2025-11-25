@@ -66,13 +66,13 @@ source /e/source/tgc-cp1/venv/Scripts/activate
 # ERIC NG@LAPTOP-MT5ND6S9 MINGW64 e/source/tgc-cp1
 # $ 
 
-# pip install --upgrade gradio google-genai pillow dotenv
+# pip install --upgrade gradio google-genai pillow dotenv # for image_chat
 
-# pip install --upgrade gradio google-genai pillow dotenv
+# pip install --upgrade gradio google-genai dotenv # for text_chat
 
 # pip install numpy faiss-cpu pypdf
 
-# pip install --upgrade requirements.txt
+# pip install pdfplumber
 
 pip install -r requirements.txt
 

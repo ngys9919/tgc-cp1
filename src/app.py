@@ -1,9 +1,9 @@
 import gradio as gr
 from pypdf import PdfReader
 # from gemini_utils_pdf import client, respond_text_in_system_language, translate_text, make_chunks, create_embeddings, build_faiss_index, retrieve, build_prompt, build_prompt_json, generate_answer, EMBED_MODEL, GEN_MODEL, GEN_MODEL2
-from gemini_utils_pdf import client, respond_text_in_system_language, translate_text
-from gemini_utils_pdf import make_chunks, create_embeddings, build_faiss_index, retrieve, build_prompt, generate_answer, EMBED_MODEL, GEN_MODEL
-from gemini_utils_pdf import build_prompt_json, generate_answer_json, GEN_MODEL2
+from gemini_utils import client, respond_text_in_system_language, translate_text
+from gemini_utils import make_chunks, create_embeddings, build_faiss_index, retrieve, build_prompt, generate_answer, EMBED_MODEL, GEN_MODEL
+from gemini_utils import build_prompt_json, generate_answer_json, GEN_MODEL2
 import json
 # --- UI helpers and Gradio logic ---
 
