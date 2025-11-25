@@ -5,8 +5,8 @@ from gemini_utils import client, respond_text_in_system_language, translate_text
 from gemini_utils import make_chunks, create_embeddings, build_faiss_index, retrieve, build_prompt, generate_answer, EMBED_MODEL, GEN_MODEL
 from gemini_utils import build_prompt_json, generate_answer_json, GEN_MODEL2
 import json
-# --- UI helpers and Gradio logic ---
 
+# --- UI helpers and Gradio logic ---
 
 language_look_up1 = {
     1: ("English", "English"),
@@ -171,9 +171,11 @@ dropdown_component = gr.Dropdown(
 
 output_component = gr.Markdown()
 
+favicon_url = "./res/TG-LOGO-COLOR.ico"
+
 def render_ui():
     # --- UI (Gradio v5) ---
-    with gr.Blocks(theme=gr.themes.Soft(primary_hue="blue", secondary_hue="emerald"), css=custom_css) as demo:
+    with gr.Blocks(theme=gr.themes.Soft(primary_hue="blue", secondary_hue="emerald"), css=custom_css, title="HeiFinance Bank") as demo:
         # gr.Markdown("## 📄 PDF Q&A (Gemini + FAISS) — minimal Gradio v5")
 
         # gr.Markdown("<h1 style='text-align: center;'> 📄 **HeiFinance Bank Q&A Chatbot** </h1>")
@@ -308,7 +310,7 @@ def render_ui():
             <h6 style="text-align: right; margin-right: 15px;">All Rights Reserved </h6>
         """)
         demo.launch(share=False, debug=True) # Running on local URL:  http://127.0.0.1:7860
-        # demo.launch(share=True)  # Public URL:  https://xxxx.gradio.app
+        # demo.launch(share=True, favicon_path=favicon_url)  # Public URL:  https://xxxx.gradio.app
         # demo.launch(server_name="0.0.0.0", server_port=7860, share=False) # use a tunneling tool (ngrok/localtunnel)
 
 # ...existing code...

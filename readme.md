@@ -13,9 +13,11 @@
 
 ## Live Web Application "HeiFinance Bank Q&A Chatbot"
 **Website URL:**\
-[**HeiFinance Bank:** Generative AI Tool](http://ec2-13-250-14-40.ap-southeast-1.compute.amazonaws.com/)
+[**HeiFinance Bank:** Generative AI Tool](https://dc87f379f32f1bfecb.gradio.live)
 
-Click the hyperlink <http://ec2-13-250-14-40.ap-southeast-1.compute.amazonaws.com/> to start the live web application!
+Click the hyperlink <https://dc87f379f32f1bfecb.gradio.live> to start the live web application!
+
+This share link expires in 1 week (dated 25 November 2025). For free permanent hosting and GPU upgrades, run `gradio deploy` from the terminal in the working directory to deploy to Hugging Face Spaces (https://huggingface.co/spaces)
 
 ---
 
@@ -53,10 +55,22 @@ Part 4:\
 TGC-CP1/   # Project Root
 │── doc/
 │   ├── Problem Solving for IT Professionals PP.docx.pdf  # Assessment 
-│   ├── README.md  # Documentation for Capstone Project
 │── img/
-│   ├── m.png  # 
-│   ├── a.png  # 
+│   ├── heifinance-home-pg1.png  # 
+│   ├── heifinance-home-pg2.png  #
+│   ├── heifinance-home-pg3.png  # 
+│   ├── heifinance-step0.png  #
+│   ├── heifinance-step1-chat-query.png  # 
+│   ├── heifinance-step1-draft-email.png  #
+│   ├── heifinance-step2.png  # 
+│   ├── heifinance-step3-chat-query.png  #
+│   ├── heifinance-step3-draft-email.png  # 
+│   ├── heifinance-step3.png  # 
+│   ├── heifinance-step4.png  #
+│   ├── TG-LOGO-COLOR.png  # Trent Global logo (png format)
+│   ├── TG-LOGO-COLOR.webp  # Trent Global logo (webp format -> original) 
+│── res/
+│   ├── TG-LOGO-COLOR.ico  # Trent Global logo (ico format) 
 │── pdf-HeiFinance/
 │   ├── Annual Report/
 │   │   ├── HeiFinance_Annual_Report_2025.pdf  # Pdf format for annual report
@@ -78,7 +92,8 @@ TGC-CP1/   # Project Root
 ├── extract_tables_robust.py  # Document Converter from PDF to JSON format
 ├── hei_tables.json  # Converted JSON file format (from HeiFinance_Full_Directory_Complete.pdf)
 │── requirements.txt  # Dependencies for the project
-│── readme.md # Setup instructions
+│── instructions.md # Setup instructions
+│── README.md  # Documentation for Capstone Project
 │── run-gradio.sh  # Bash file to run the Gradio app
 │── run-venv.sh  # Bash file to run virtual environment
 │── setup-environment.sh  # Bash file for environment setup
@@ -215,6 +230,7 @@ to start the Gradio web app!
 The Python Web Framework used is Gradio (light-weight, popular for Generative AI aplications) and the Gemini Models adopted for PDF RAG (because we need vector embedding and general generative ai models) are:
 
 **EMBED_MODEL** = *"text-embedding-004"*
+
 **GEN_MODEL** = *"gemini-2.5-flash-lite"*
 
 and the Gemini Model adopted for JSON (because we need code execution capability for data analysis using Python and Pandas library) is:
