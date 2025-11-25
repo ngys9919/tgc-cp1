@@ -59,6 +59,29 @@ def update_pdf(new_pdf):
 
     pdf_selected = pdf_folder + "/" + pdf_file
 
+output_lookup2 = {
+    "Chatbot Query": ("Chatbot Query", "Prompt1"),
+    "Draft Email": ("Draft Email", "Prompt2")
+}
+
+output_prompt = "Prompt1"
+
+def update_output(output_choice):
+    global output_prompt
+    
+    # to refer to the gobal variabl enamed odel    
+    output_selected = output_lookup2.get(output_choice)[1]
+    display_output = output_lookup2.get(output_choice)[0]
+    output_prompt = output_selected
+
+    # in case the user selects an invalid value (the new_pdf is not
+    # found in the lookup)
+    if not output_prompt:
+        output_choice = 1  # Default to Chatbot Query if invalid choice
+        output_selected = "Prompt1"
+        display_output = "Chatbot Query"
+        output_prompt = output_selected
+
 css_code = """
 .gradio-container button.primary {
     background-color: lightblue !important; /* lightblue */
@@ -131,7 +154,7 @@ def render_ui():
             </div>
         """)
         
-        gr.Markdown("### Step 0: Please choose the Chat Language from 'Dropdown Menu' and click 'Submit' button.")
+        gr.Markdown("### Step 0: Please choose the Chat Language from 'Dropdown Menu' and click 'Submit Chat Language' button.")
         gr.Markdown("## The Default Chat Language is <span style='color: blue;'>English</span>")
 
         my_interface = gr.Interface(
@@ -160,22 +183,35 @@ def render_ui():
 
         #     my_interface.output_component = my_interface.input_components[0]  # Assuming the first input is the dropdown
         
-        gr.Markdown("### Step 1: Please choose the Chat Category from 'Radio' button.")
+        gr.Markdown("### Step 1: Please choose the Chat Category from 'Radio' button and select your Output Type.")
 
         # gr.Radio here: create an interface for the user to choose the personality
         # have at least three - 1) helpful assistant, 2)snarky and sarcasic, 3) lazy and unmotiviated
-        pdf = gr.Radio(choices=[
-            ("Annual Report", "Annual Report"),
-            ("Bank Products", "Bank Products"),
-            ("Employee Handbook", "Employee Handbook"),
-            ("Organisation Chart", "Organisation Chart"),
-            ("Phone Directory", "Phone Directory")
-        ], label="Chat Category", value="Bank Products")
+        with gr.Row():
+            with gr.Column(scale=3):
+                pdf = gr.Radio(choices=[
+                    ("Annual Report", "Annual Report"),
+                    ("Bank Products", "Bank Products"),
+                    ("Employee Handbook", "Employee Handbook"),
+                    ("Organisation Chart", "Organisation Chart"),
+                    ("Phone Directory", "Phone Directory")
+                ], label="Chat Category", value="Bank Products")
 
-        pdf.change(
-            fn = update_pdf,
-            inputs = [pdf]
-        )
+                pdf.change(
+                    fn = update_pdf,
+                    inputs = [pdf]
+                )
+
+            with gr.Column(scale=1):
+                output_type = gr.Radio(choices=[
+                    ("Chatbot Query", "Chatbot Query"),
+                    ("Draft Email", "Draft Email")
+                ], label="Please select your Output Type", value="Chatbot Query")
+
+                output_type.change(
+                    fn = update_output,
+                    inputs = [output_type]
+                )
 
         # with gr.Row():
         #     # Return a real filesystem path to do_build
@@ -187,15 +223,17 @@ def render_ui():
         #     top_k = gr.Number(value=4, label="Top-K", precision=0)
         #     # top_k = gr.Slider(1, 10, value=4, step=1, label="Top-K")
 
-        build_btn = gr.Button("Build Index", variant="primary", elem_classes=["my-custom-class", "another-class"])
-        # status = gr.Markdown("")
         gr.Markdown("### Step 2: Please click 'Build Index' button to start.")
+        build_btn = gr.Button("Build Index", variant="primary", elem_classes=["my-custom-class", "another-class"])
+        # status = gr.Markdown("")        
         status = gr.Markdown("")
         current_file_status = gr.Markdown("")
+        
+
         chatbot = gr.Chatbot(height=420, label="HeiFinance Chatbox")
-        gr.Markdown("### Step 3: Please type your query in the Chatbox below.")
+        gr.Markdown("### Step 3: Please type your query in the Textbox below.")
         msg = gr.Textbox(label="Ask a question", placeholder="Type and press Enter", elem_classes="my-custom-class")
-        gr.Markdown("### Step 4 (optional): To clear conversations, click 'Clear Chatbox' button.")
+        gr.Markdown("### Step 4 (optional): To clear conversations, click 'Clear HeiFinance Chatbox' button.")
         # my_interface.output_component = my_interface.input_components[0]  # Assuming the first input is the dropdown
         clear_chatbox_btn = gr.Button("Clear HeiFinance Chatbox", elem_classes=["my-custom-class", "another-class"])
 
@@ -289,7 +327,7 @@ def do_ask(message, history, chunks, index, top_k):
 
     hits = retrieve(message, index, chunks, client, k=int(top_k), model_name=EMBED_MODEL)
     contexts = [h[0] for h in hits]
-    prompt = build_prompt(message, contexts)
+    prompt = build_prompt(message, contexts, output_prompt=output_prompt)
     rag_answer = generate_answer(prompt, client, model_name=GEN_MODEL)
     if language_selected == "Chinese":
         answer = respond_text_in_system_language(rag_answer, client, system_language=language_selected, model_name=GEN_MODEL)

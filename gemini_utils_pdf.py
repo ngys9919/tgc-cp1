@@ -82,7 +82,7 @@ def retrieve(query, index, chunks, client, k=4, model_name="text-embedding-004")
         hits.append((chunks[idx], float(score), int(idx)))
     return hits
 
-def build_prompt(user_question, contexts, max_chars=8000):
+def build_prompt(user_question, contexts, max_chars=8000, output_prompt="Prompt1"):
     """
     Build a grounded prompt from retrieved contexts.
     Trims context to avoid overly long requests.
@@ -103,6 +103,26 @@ def build_prompt(user_question, contexts, max_chars=8000):
         [f"[Source {i+1}]\n{c}" for i, c in enumerate(selected)]
     )
 
+    template = """
+        "Dear [Customer Name],\n"
+
+        "Thank you for reaching out to HeiFinance Bank.\n"
+
+        "[Answer to customer’s specific query. Ensure details are accurate and taken from the official product fact sheet. If applicable, include relevant fees, or exceptions.]\n"
+
+        "For your reference:\n"
+        "• [Key detail 1]\n"  
+        "• [Key detail 2]\n"  
+        "• [Key detail 3, if needed]\n"  
+
+        "If you have any further questions, please do not hesitate to contact us at cust.service@heifinance.com\n"
+
+        "Warm regards,\n"  
+        "Ng Yew Seng\n" 
+        "Customer Service Officer\n"  
+        "HeiFinance Bank\n"
+    """
+
     # sys_instructions = (
     #     "You are a careful assistant for answering questions about a PDF.\n"
     #     "Use ONLY the provided context to answer.\n"
@@ -110,26 +130,41 @@ def build_prompt(user_question, contexts, max_chars=8000):
     #     "Cite sources as [Source n] where n matches the provided context blocks."
     # )
 
-    sys_instructions = (
+    sys_instructions1 = (
         "You are a careful assistant for answering questions about a PDF.\n"
         "Use ONLY the provided context to answer.\n"
         "If the answer is not in the context, say you don't know.\n"
         "Do not cite sources as [Source n] where n matches the provided context blocks."
     )
 
-    prompt = (
-        f"{sys_instructions}\n\n"
+    prompt1 = (
+        f"{sys_instructions1}\n\n"
         f"CONTEXT:\n{context_block}\n\n"
         f"QUESTION: {user_question}\n"
-        f"ANSWER (with citations):"
+        f"ANSWER (no citations):"
     )
 
-    # prompt = (
-    #     f"{sys_instructions}\n\n"
-    #     f"CONTEXT:\n{context_block}\n\n"
-    #     f"QUESTION: {user_question}\n"
-    #     f"ANSWER (no citations):"
-    # )
+    sys_instructions2 = (
+        "All responses must not exceed 100 words.\n"
+        "You must use the the vector embeddings to search for information for all requests.\n"
+        "All responses must follow the following template:\n"
+        f"{template}\n"
+        "If the answer is not in the context, say you don't know.\n"
+        "Do not cite sources as [Source n] where n matches the provided context blocks."
+    )
+        
+    prompt2 = (
+        f"{sys_instructions2}\n\n"
+        f"CONTEXT:\n{context_block}\n\n"
+        f"QUESTION: {user_question}\n"
+        f"ANSWER (with template):"
+    )
+
+    # switch between prompt1 and prompt2 as needed
+    if (output_prompt == "Prompt2"):
+        prompt = prompt2
+    else:
+        prompt = prompt1  
 
     return prompt
 
