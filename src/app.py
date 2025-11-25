@@ -36,7 +36,7 @@ pdf_lookup2 = {
     "Annual Report": ("Annual Report", "HeiFinance_Annual_Report_2025.pdf"),
     "Bank Products": ("Bank Products", "HeiFinance Bank Product Fact Sheet.pdf"),
     "Employee Handbook": ("Employee Handbook", "HeiFinance_Employee_Handbook.pdf"),
-    "Organisation Chart": ("Organisation Chart", "HeiFinance_Organization_Chart.pdf"),
+    "Organisation Chart": ("Organisation Chart", "HeiFinance_Organization_Chart_Executive_Summary.pdf"),
     "Phone Directory": ("Phone Directory", "HeiFinance_Full_Directory_Complete.pdf")
 }
 
