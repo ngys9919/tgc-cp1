@@ -120,6 +120,66 @@ css_code = """
 }
 """
 
+# css_about = """
+# .css-box-model {
+#   /* border-dimensions */
+#   border-top: 15px;
+#   border-right: 20px;
+#   border-bottom: 10px;
+#   border-left: 5px;
+#   /* shorthands for border: top, right, bottom, left */
+#   /* border: 15px, 20px, 10px, 5px; */
+  
+#   /* margin-dimensions */
+#   margin-top: 20px;
+#   margin-right: 15px;
+#   margin-bottom: 5px;
+#   margin-left: 10px;
+#   /* shorthands for margin: top, right, bottom, left */
+#   /* margin: 20px, 15px, 5px, 10px; */
+  
+#   /* padding-dimensions */
+#   padding-top: 10px;
+#   padding-right: 5px;
+#   padding-bottom: 15px;
+#   padding-left: 20px;
+#   /* shorthands for padding: top, right, bottom, left */
+#   /* padding: 10px, 5px, 15px, 20px; */
+# }
+
+# .box {
+#   width: auto;
+#   /* max-width: 100vw; */
+#   /* max-width: 450px; */
+#   height: auto;
+#   top:5vh;
+#   left:5vw;
+#   /* position: sticky; */
+#   color: black;
+#   font-size: 1.5em;
+# }
+
+# .box:hover {
+#   width: auto;
+#   /* max-width: 100vw; */
+#   /* max-width: 450px; */
+#   height: auto;
+#   top:5vh;
+#   left:5vw;
+#   /* position: sticky; */
+#   color: red;
+#   background-color: yellow;
+#   font-size: 1.5em;
+# }
+
+# .box-border {
+#   /* border-color, border-width, border-style: these 3 are in group together */
+#     border-color: blueviolet; 
+#     border-width: 1px;
+#     border-style: solid;
+# }
+# """
+
 custom_css = """
 .my-custom-class {
     background-color: lightblue;
@@ -143,6 +203,78 @@ p.first-letter::first-letter {
     padding: 3px 3px;
     margin-right: 3px;
     float: left;
+}
+
+.css-box-model {
+  /* border-dimensions */
+  border-top: 15px;
+  border-right: 20px;
+  border-bottom: 10px;
+  border-left: 5px;
+  /* shorthands for border: top, right, bottom, left */
+  /* border: 15px, 20px, 10px, 5px; */
+  
+  /* margin-dimensions */
+  margin-top: 20px;
+  margin-right: 15px;
+  margin-bottom: 5px;
+  margin-left: 10px;
+  /* shorthands for margin: top, right, bottom, left */
+  /* margin: 20px, 15px, 5px, 10px; */
+  
+  /* padding-dimensions */
+  padding-top: 10px;
+  padding-right: 5px;
+  padding-bottom: 15px;
+  padding-left: 20px;
+  /* shorthands for padding: top, right, bottom, left */
+  /* padding: 10px, 5px, 15px, 20px; */
+}
+
+.box {
+  width: auto;
+  /* max-width: 100vw; */
+  /* max-width: 450px; */
+  height: auto;
+  top:5vh;
+  left:5vw;
+  /* position: sticky; */
+  color: black;
+  font-size: 1.5em;
+}
+
+.box:hover {
+  width: auto;
+  /* max-width: 100vw; */
+  /* max-width: 450px; */
+  height: auto;
+  top:5vh;
+  left:5vw;
+  /* position: sticky; */
+  color: red;
+  background-color: yellow;
+  font-size: 1.5em;
+}
+
+.box-border {
+  /* border-color, border-width, border-style: these 3 are in group together */
+    border-color: blueviolet; 
+    border-width: 1px;
+    border-style: solid;
+}
+
+.full-size-image img {
+    object-fit: fill !important; /* Stretches the image to fill the entire container */
+    width: 100% !important;
+    height: 100% !important;
+}
+.full-size-image {
+    height: 120px !important; /* Set the desired height of the component container */
+    width: 120px !important; /* Set the desired width of the component container */
+}
+
+.gradio-container .gr-textbox textarea {
+    height: 10px !important; /* Adjust the height as needed */
 }
 """
 def custom_clear_action():
@@ -172,143 +304,214 @@ dropdown_component = gr.Dropdown(
 output_component = gr.Markdown()
 
 favicon_url = "./res/TG-LOGO-COLOR.ico"
+logo_url = "./img/TG-LOGO-COLOR.png"
 
 def render_ui():
     # --- UI (Gradio v5) ---
     with gr.Blocks(theme=gr.themes.Soft(primary_hue="blue", secondary_hue="emerald"), css=custom_css, title="HeiFinance Bank") as demo:
-        # gr.Markdown("## 📄 PDF Q&A (Gemini + FAISS) — minimal Gradio v5")
-
-        # gr.Markdown("<h1 style='text-align: center;'> 📄 **HeiFinance Bank Q&A Chatbot** </h1>")
-        gr.HTML("""
-            <div style='height: 100px; width: 400px; background-color: pink; color: red; margin: auto; border-radius: 10px;'>
-                <h1 style='text-align: center; padding-top: 30px; font-size: 20px;'>
-                <p class="first-letter">📄<b style='color: blue; margin-left: 3px'>HeiFinance Bank <span style="font-variant: small-caps; font-size: 4vh; color: red;">Q&A</span> Chatbot</b></p>
-                </h1>
-            </div>
-        """)
-        
-        gr.Markdown("### Step 0: Please choose the Chat Language from 'Dropdown Menu' and click 'Submit Chat Language' button.")
-        gr.Markdown("## The Default Chat Language is <span style='color: blue;'>English</span>")
-
-        my_interface = gr.Interface(
-            fn=process,
-            inputs=[
-                dropdown_component
-            ],
-            outputs=[
-                output_component
-            ],
-            flagging_mode="never",
-            clear_btn="Clear Chat Language",
-            submit_btn="Submit Chat Language",
-            live=False, # Both Clear Button and Submit Button
-            # live=True,  # Clear Button only
-            css=css_code
-        )
-
-        # with my_interface: # If using Blocks, otherwise directly after interface definition
-        #     clear_btn = gr.ClearButton(value="Clear")
-        #     clear_btn.click(
-        #         fn=reset_dropdown_to_default,
-        #         inputs=[],
-        #         outputs=[dropdown_component]
-        #     )
-
-        #     my_interface.output_component = my_interface.input_components[0]  # Assuming the first input is the dropdown
-        
-        gr.Markdown("### Step 1: Please choose the Chat Category from 'Radio' button and select your Output Type.")
-
-        # gr.Radio here: create an interface for the user to choose the personality
-        # have at least three - 1) helpful assistant, 2)snarky and sarcasic, 3) lazy and unmotiviated
-        with gr.Row():
-            with gr.Column(scale=3):
-                pdf = gr.Radio(choices=[
-                    ("Annual Report", "Annual Report"),
-                    ("Bank Products", "Bank Products"),
-                    ("Employee Handbook", "Employee Handbook"),
-                    ("Organisation Chart", "Organisation Chart"),
-                    ("Phone Directory", "Phone Directory")
-                ], label="Chat Category", value="Bank Products")
-
-                pdf.change(
-                    fn = update_pdf,
-                    inputs = [pdf]
-                )
-
-            with gr.Column(scale=1):
-                output_type = gr.Radio(choices=[
-                    ("Chatbot Query", "Chatbot Query"),
-                    ("Draft Email", "Draft Email")
-                ], label="Please select your Output Type", value="Chatbot Query")
-
-                output_type.change(
-                    fn = update_output,
-                    inputs = [output_type]
-                )
-
-        # with gr.Row():
-        #     # Return a real filesystem path to do_build
-        #     pdf_file = gr.File(label="Upload PDF", type="filepath", file_types=[".pdf"], file_count="single")
-
-        # with gr.Row():
-        #     chunk_size = gr.Number(value=1200, label="Chunk size", precision=0)
-        #     overlap = gr.Number(value=200, label="Overlap", precision=0)
-        #     top_k = gr.Number(value=4, label="Top-K", precision=0)
-        #     # top_k = gr.Slider(1, 10, value=4, step=1, label="Top-K")
-
-        gr.Markdown("### Step 2: Please click 'Build Index' button to start.")
-        build_btn = gr.Button("Build Index", variant="primary", elem_classes=["my-custom-class", "another-class"])
-        # status = gr.Markdown("")        
-        status = gr.Markdown("")
-        current_file_status = gr.Markdown("")
-
-        with gr.Tab("JSON Structure Scan"):
+        with gr.Tab("Instructions (5-Steps Process)"):
             with gr.Row():
-                json_results = gr.JSON()
-                json_run = gr.Button("Run")
-                json_run.click(
-                    json_model,
-                    inputs=[],
-                    outputs=json_results,
-                    api_name="json_model"
-                )
+                # gr.Image("./img/TG-LOGO-COLOR.png", elem_classes=["full-size-image"])
+                # gr.Image(logo_url, width=150, height=150, scale=1, min_width=0) # min_width=0 prevents it from being stuck at the default min size
+                gr.Image(logo_url, elem_classes=["full-size-image"], scale=0) # scale=0 takes up 0 units of space (minimum width), making it narrower
 
-        chatbot = gr.Chatbot(height=420, label="HeiFinance Chatbox")
-        gr.Markdown("### Step 3: Please type your query in the Textbox below.")
-        msg = gr.Textbox(label="Ask a question", placeholder="Type and press Enter", elem_classes="my-custom-class")
-        gr.Markdown("### Step 4 (optional): To clear conversations, click 'Clear HeiFinance Chatbox' button.")
-        gr.Markdown("<h1 style='text-align: center; color: red; !important'>IMPORTANT NOTICE:</h1> <h2 style='text-align: center; color: blue; !important'>To clear error message, click 'Clear HeiFinance Chatbox OR Reset Error' button.</h2>")
-        # my_interface.output_component = my_interface.input_components[0]  # Assuming the first input is the dropdown
-        clear_chatbox_btn = gr.Button("Clear HeiFinance Chatbox OR Reset Error", elem_classes=["my-custom-class", "another-class"])
+                gr.HTML("""
+                    <div style='height: 100px; width: 400px; background-color: pink; color: red; margin: auto; border-radius: 10px;'>
+                        <h1 style='text-align: center; padding-top: 30px; font-size: 20px;'>
+                        <p class="first-letter">📄<b style='color: blue; margin-left: 3px'>HeiFinance Bank <span style="font-variant: small-caps; font-size: 4vh; color: red;">Q&A</span> Chatbot</b></p>
+                        </h1>
+                    </div>
+                """)
 
-        # States
-        st_chunks = gr.State([])
-        st_index = gr.State(None)
-        st_top_k = gr.State(4)
+            with gr.Accordion("Personal Name Details: (collapsible)"):
+                with gr.Group():
+                    with gr.Row():
+                        gr.Textbox(label="Surame", scale=1)
+                        gr.Textbox(label="Given Name", scale=2)
 
-        # Wire events (no queue)
-        build_btn.click(
-            do_build,
-            # inputs=[pdf_file, chunk_size, overlap, top_k],
-            inputs=[],
-            outputs=[status, st_chunks, st_index, st_top_k, current_file_status],
-            show_progress=True,   # button spinner; no gradio queue used
-        )
+            with gr.Walkthrough(selected=0) as walkthrough:
+                with gr.Step("Step 0", id=0):
+                    gr.Markdown("### Step 0: Please choose the Chat Language from 'Dropdown Menu' and click 'Submit Chat Language' button.")
+                    gr.Markdown("## The Default Chat Language is <span style='color: blue;'>English</span>")
+                    btn = gr.Button("go to Step 1")
+                    btn.click(lambda: gr.Walkthrough(selected=1), outputs=walkthrough)
+                with gr.Step("Step 1", id=1):
+                    gr.Markdown("### Step 1: Please choose the Chat Category from 'Radio' button and select your Output Type.")
+                    btn = gr.Button("go to Step 2")
+                    btn.click(lambda: gr.Walkthrough(selected=2), outputs=walkthrough)
+                with gr.Step("Step 2", id=2):
+                    gr.Markdown("### Step 2: Please click 'Build Index' button to start.")
+                    btn = gr.Button("go to Step 3")
+                    btn.click(lambda: gr.Walkthrough(selected=3), outputs=walkthrough)
+                with gr.Step("Step 3", id=3):
+                    gr.Markdown("### Step 3: Please type your query in the Textbox below.")
+                    btn = gr.Button("go to Step 4")
+                    btn.click(lambda: gr.Walkthrough(selected=4), outputs=walkthrough)
+                with gr.Step("Step 4", id=4):
+                    gr.Markdown("### Step 4 (optional): To clear conversations, click 'Clear HeiFinance Chatbox' button.")
+                    btn = gr.Button("go to Step 5")
+                    btn.click(lambda: gr.Walkthrough(selected=5), outputs=walkthrough)
+                with gr.Step("Step 5", id=5):
+                    gr.Markdown("<h1 style='text-align: center; color: red; !important'>IMPORTANT NOTICE:</h1> <h2 style='text-align: center; color: blue; !important'>To clear error message, click 'Clear HeiFinance Chatbox OR Reset Error' button.</h2>")
+                    txt = gr.Textbox("The End")
+        
+        with gr.Tab("Chatbox"):
+            
+            # gr.Markdown("## 📄 PDF Q&A (Gemini + FAISS) — minimal Gradio v5")
 
-        msg.submit(
-            do_ask,
-            inputs=[msg, chatbot, st_chunks, st_index, st_top_k],
-            outputs=[chatbot, msg],
-            show_progress=True,
-        )
+            # gr.Markdown("<h1 style='text-align: center;'> 📄 **HeiFinance Bank Q&A Chatbot** </h1>")
+            gr.HTML("""
+                <div style='height: 100px; width: 400px; background-color: pink; color: red; margin: auto; border-radius: 10px;'>
+                    <h1 style='text-align: center; padding-top: 30px; font-size: 20px;'>
+                    <p class="first-letter">📄<b style='color: blue; margin-left: 3px'>HeiFinance Bank <span style="font-variant: small-caps; font-size: 4vh; color: red;">Q&A</span> Chatbot</b></p>
+                    </h1>
+                </div>
+            """)
+            
+            gr.Markdown("### Step 0: Please choose the Chat Language from 'Dropdown Menu' and click 'Submit Chat Language' button.")
+            gr.Markdown("## The Default Chat Language is <span style='color: blue;'>English</span>")
 
-        clear_chatbox_btn.click(lambda: ([], ""), outputs=[chatbot, msg])
+            my_interface = gr.Interface(
+                fn=process,
+                inputs=[
+                    dropdown_component
+                ],
+                outputs=[
+                    output_component
+                ],
+                flagging_mode="never",
+                clear_btn="Clear Chat Language",
+                submit_btn="Submit Chat Language",
+                live=False, # Both Clear Button and Submit Button
+                # live=True,  # Clear Button only
+                css=css_code
+            )
 
-        gr.HTML("""
-            <h6 style="text-align: right; margin-right: 15px;">Coder: <span style="font-variant:small-caps; font-size: 3vh; color: red;">Ng Yew Seng</span></h6>    
-            <h6 style="text-align: right; margin-right: 15px;">Copyright 2025 &#169; Trent Global College</h6>
-            <h6 style="text-align: right; margin-right: 15px;">All Rights Reserved </h6>
-        """)
+            # with my_interface: # If using Blocks, otherwise directly after interface definition
+            #     clear_btn = gr.ClearButton(value="Clear")
+            #     clear_btn.click(
+            #         fn=reset_dropdown_to_default,
+            #         inputs=[],
+            #         outputs=[dropdown_component]
+            #     )
+
+            #     my_interface.output_component = my_interface.input_components[0]  # Assuming the first input is the dropdown
+            
+            gr.Markdown("### Step 1: Please choose the Chat Category from 'Radio' button and select your Output Type.")
+
+            # gr.Radio here: create an interface for the user to choose the personality
+            # have at least three - 1) helpful assistant, 2)snarky and sarcasic, 3) lazy and unmotiviated
+            with gr.Row():
+                with gr.Column(scale=3):
+                    pdf = gr.Radio(choices=[
+                        ("Annual Report", "Annual Report"),
+                        ("Bank Products", "Bank Products"),
+                        ("Employee Handbook", "Employee Handbook"),
+                        ("Organisation Chart", "Organisation Chart"),
+                        ("Phone Directory", "Phone Directory")
+                    ], label="Chat Category", value="Bank Products")
+
+                    pdf.change(
+                        fn = update_pdf,
+                        inputs = [pdf]
+                    )
+
+                with gr.Column(scale=1):
+                    output_type = gr.Radio(choices=[
+                        ("Chatbot Query", "Chatbot Query"),
+                        ("Draft Email", "Draft Email")
+                    ], label="Please select your Output Type", value="Chatbot Query")
+
+                    output_type.change(
+                        fn = update_output,
+                        inputs = [output_type]
+                    )
+
+            # with gr.Row():
+            #     # Return a real filesystem path to do_build
+            #     pdf_file = gr.File(label="Upload PDF", type="filepath", file_types=[".pdf"], file_count="single")
+
+            # with gr.Row():
+            #     chunk_size = gr.Number(value=1200, label="Chunk size", precision=0)
+            #     overlap = gr.Number(value=200, label="Overlap", precision=0)
+            #     top_k = gr.Number(value=4, label="Top-K", precision=0)
+            #     # top_k = gr.Slider(1, 10, value=4, step=1, label="Top-K")
+
+            gr.Markdown("### Step 2: Please click 'Build Index' button to start.")
+            build_btn = gr.Button("Build Index", variant="primary", elem_classes=["my-custom-class", "another-class"])
+            # status = gr.Markdown("")        
+            status = gr.Markdown("")
+            current_file_status = gr.Markdown("")
+
+            with gr.Tab("JSON Structure Scan"):
+                with gr.Row():
+                    json_results = gr.JSON()
+                    json_run = gr.Button("Run")
+                    json_run.click(
+                        json_model,
+                        inputs=[],
+                        outputs=json_results,
+                        api_name="json_model"
+                    )
+
+            chatbot = gr.Chatbot(height=420, label="HeiFinance Chatbox")
+            gr.Markdown("### Step 3: Please type your query in the Textbox below.")
+            msg = gr.Textbox(label="Ask a question", placeholder="Type and press Enter", elem_classes="my-custom-class")
+            gr.Markdown("### Step 4 (optional): To clear conversations, click 'Clear HeiFinance Chatbox' button.")
+            gr.Markdown("<h1 style='text-align: center; color: red; !important'>IMPORTANT NOTICE:</h1> <h2 style='text-align: center; color: blue; !important'>To clear error message, click 'Clear HeiFinance Chatbox OR Reset Error' button.</h2>")
+            # my_interface.output_component = my_interface.input_components[0]  # Assuming the first input is the dropdown
+            clear_chatbox_btn = gr.Button("Clear HeiFinance Chatbox OR Reset Error", elem_classes=["my-custom-class", "another-class"])
+
+            # States
+            st_chunks = gr.State([])
+            st_index = gr.State(None)
+            st_top_k = gr.State(4)
+
+            # Wire events (no queue)
+            build_btn.click(
+                do_build,
+                # inputs=[pdf_file, chunk_size, overlap, top_k],
+                inputs=[],
+                outputs=[status, st_chunks, st_index, st_top_k, current_file_status],
+                show_progress=True,   # button spinner; no gradio queue used
+            )
+
+            msg.submit(
+                do_ask,
+                inputs=[msg, chatbot, st_chunks, st_index, st_top_k],
+                outputs=[chatbot, msg],
+                show_progress=True,
+            )
+
+            clear_chatbox_btn.click(lambda: ([], ""), outputs=[chatbot, msg])
+
+            gr.HTML("""
+                <h6 style="text-align: right; margin-right: 15px;">Coder: <span style="font-variant:small-caps; font-size: 3vh; color: red;">Ng Yew Seng</span></h6>    
+                <h6 style="text-align: right; margin-right: 15px;">Copyright 2025 &#169; Trent Global College</h6>
+                <h6 style="text-align: right; margin-right: 15px;">All Rights Reserved </h6>
+            """)
+
+        with gr.Tab("About..."):
+            gr.HTML("""
+                <h1>About <span style="font-variant: small-caps; font-size: 5vh; color: red;">CAPSTONE PROJECT</span>:</h1>
+                <!-- <h1>&#174 <span style="font-variant: normal; font-size: 3vh; color: red;">Registered Trademark</span></h1> -->
+                <h2 style="text-align: center; font-size: 3vh;">Coder: <span style="font-variant:small-caps; font-size: 4vh; color: red;">Ng Yew Seng</span></h2>    
+                <h2 style="text-align: center; font-size: 3vh;">Copyright 2025 &#169; Trent Global College</h2>
+                <h2 style="text-align: center; font-size: 3vh;">All Rights Reserved </h2>
+                <h2>Batch: <span style="font-variant: small-caps; font-size: 4vh; color: blue;">Part of FSD - Run 8 Cohort (Part-Time)</span></h2>
+                <div class="css-box-model box box-border">
+                    <strong>Python+AI Capstone Project</strong> This project is a web chatbot application that specialized in answering questions related to the HeiFinance Bank documents 
+                    <wbr>(currently implemented for Annual Report, Bank Products, Employee Handbook, Organisation Chart, and Phone Directory)
+                    <wbr>and gracefully declines queries outside this domain.
+
+                    <wbr>The application is built using Gradio, a Python web framework, and utilizes various Google Gemini models for generative artificial intelligence processing.
+                    <wbr>The project aims to help the bank automates query and answering with official fact sheets and draft email replies using Generative AI.
+                </div>
+                
+                <p>For more information, please refer to the project documentation or contact the author.</p>
+                <p>Thank you for your interest in this project!</p>
+            """)
+
         demo.launch(share=False, debug=True) # Running on local URL:  http://127.0.0.1:7860
         # demo.launch(share=True, favicon_path=favicon_url)  # Public URL:  https://xxxx.gradio.app
         # demo.launch(server_name="0.0.0.0", server_port=7860, share=False) # use a tunneling tool (ngrok/localtunnel)

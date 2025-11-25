@@ -79,7 +79,7 @@ TGC-CP1/   # Project Root
 │   ├── Employee Handbook/
 │   │   ├── HeiFinance_Employee_Handbook.pdf  # Pdf format for employee handbook
 │   ├── Organisation Chart/
-│   │   ├── HeiFinance_Organization_chart.pdf  # Pdf format for organization chart
+│   │   ├── HeiFinance_Organization_Chart_Executive_Summary.pdf  # Pdf format for organization chart (new)
 │   ├── Phone Directory/
 │   │   ├── HeiFinance_Full_Directory_Complete.pdf  # Pdf format for phone directory
 │   │   ├── heifinance_tables-formatted.json  # In-used json format for phone dircetory
@@ -109,7 +109,7 @@ For the purpose of the portfolio project, a frontend Gradio application with Gen
 }
 ```
 
-This project is about a simple *Generative AI Tool* at **HeiFinance Bank** using the concepts we learned in the Python + AI course as part of the module Problem Solving for IT Professionals (with Generative AI) for SCTP FSD - Run 8 Cohort.
+This project is about a simple *Generative AI Tool* at **HeiFinance Bank** using the concepts we learned in the Python + AI course as part of the module Problem Solving for IT Professionals (with Generative AI) for SCTP BELLS FSD - Run 8 Cohort (Part-Time).
 
 
 This simple web software is a chatbot specializing in answering questions related to the HeiFinance documents (currently implemented for Annual Report, Bank Products, Employee Handbook, Organisation Chart, and Phone Directory) and gracefully declines queries outside this domain.
