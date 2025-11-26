@@ -102,12 +102,12 @@ template = """
         "If you have any further questions, please do not hesitate to contact us at cust.service@heifinance.com\n"
 
         "Warm regards,\n"  
-        "Ng Yew Seng\n" 
+        f"{surname_template} {givenname_template}\n" 
         "Customer Service Officer\n"  
         "HeiFinance Bank\n"
     """
 
-def build_prompt_json(user_question, json_tables=None, max_chars=32000, output_prompt="Prompt1"):
+def build_prompt_json(user_question, json_tables=None, max_chars=32000, output_prompt="Prompt1", surname_template="Ng", givenname_template="Yew Seng"):
     """
     Build a grounded prompt from retrieved contexts.
     Trims context to avoid overly long requests.
@@ -188,6 +188,7 @@ def build_prompt_json(user_question, json_tables=None, max_chars=32000, output_p
         f"{sys_instructions2}\n\n"
         f"DATA: {json_tables}\n\n"
         f"QUESTION: {user_question}\n\n"
+        f"Responder: You are {surname_template} {givenname_template}"
         f"CODE EXECUTION: {code_data_analysis}\n"
         f"ANSWER (with template): "
     )
@@ -267,7 +268,7 @@ def generate_answer_json(prompt, client, model_name="gemini-1.5-flash"):
     # The new SDK exposes a 'text' convenience property.
     return getattr(resp, "text", str(resp))
 
-def build_prompt(user_question, contexts, max_chars=8000, output_prompt="Prompt1"):
+def build_prompt(user_question, contexts, max_chars=8000, output_prompt="Prompt1", surname_template="Ng", givenname_template="Yew Seng"):
     """
     Build a grounded prompt from retrieved contexts.
     Trims context to avoid overly long requests.
@@ -324,6 +325,7 @@ def build_prompt(user_question, contexts, max_chars=8000, output_prompt="Prompt1
         f"{sys_instructions2}\n\n"
         f"CONTEXT:\n{context_block}\n\n"
         f"QUESTION: {user_question}\n"
+        f"Responder: You are {surname_template} {givenname_template}"
         f"ANSWER (with template):"
     )
 

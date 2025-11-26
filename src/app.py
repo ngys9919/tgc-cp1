@@ -1,9 +1,11 @@
 import gradio as gr
 from pypdf import PdfReader
 # from gemini_utils_pdf import client, respond_text_in_system_language, translate_text, make_chunks, create_embeddings, build_faiss_index, retrieve, build_prompt, build_prompt_json, generate_answer, EMBED_MODEL, GEN_MODEL, GEN_MODEL2
-from gemini_utils import client, respond_text_in_system_language, translate_text
+from gemini_utils import client
+from gemini_utils import respond_text_in_system_language, translate_text
 from gemini_utils import make_chunks, create_embeddings, build_faiss_index, retrieve, build_prompt, generate_answer, EMBED_MODEL, GEN_MODEL
 from gemini_utils import build_prompt_json, generate_answer_json, GEN_MODEL2
+
 import json
 
 # --- UI helpers and Gradio logic ---
@@ -306,9 +308,29 @@ output_component = gr.Markdown()
 favicon_url = "./res/TG-LOGO-COLOR.ico"
 logo_url = "./img/TG-LOGO-COLOR.png"
 
+surname_template = "Ng"
+givenname_template = "Yew Seng"
+
+def surname_change(surname):
+    global surname_template
+    if (surname):
+        surname_template = surname
+    else:
+        surname_template ="Ng"
+    return
+
+def givenname_change(givenname):
+    global givenname_template
+    if (givenname):
+        givenname_template = givenname
+    else:
+        givenname_template = "Yew Seng"
+    return
+
 def render_ui():
     # --- UI (Gradio v5) ---
     with gr.Blocks(theme=gr.themes.Soft(primary_hue="blue", secondary_hue="emerald"), css=custom_css, title="HeiFinance Bank") as demo:
+         
         with gr.Tab("Instructions (5-Steps Process)"):
             with gr.Row():
                 # gr.Image("./img/TG-LOGO-COLOR.png", elem_classes=["full-size-image"])
@@ -326,8 +348,24 @@ def render_ui():
             with gr.Accordion("Personal Name Details: (collapsible)"):
                 with gr.Group():
                     with gr.Row():
-                        gr.Textbox(label="Surame", scale=1)
-                        gr.Textbox(label="Given Name", scale=2)
+                        # surname = gr.Textbox(label="Surname", scale=1, value="Ng")
+                        # givenname = gr.Textbox(label="Given Name", scale=2, value="Yew Seng")
+
+                        # surname = gr.Textbox(label="Surname", scale=1, value="Please enter your Surname.")
+                        # givenname = gr.Textbox(label="Given Name", scale=2, value="Please enter your Given Name.")
+                        
+                        surname = gr.Textbox(label="Surname", scale=1, value="Ng")
+                        givenname = gr.Textbox(label="Given Name", scale=2, value="Yew Seng")
+
+                        surname.change(
+                            fn=surname_change,
+                            inputs=[surname]
+                        )
+
+                        givenname.change(
+                            fn=givenname_change,
+                            inputs=[givenname]
+                        )
 
             with gr.Walkthrough(selected=0) as walkthrough:
                 with gr.Step("Step 0", id=0):
@@ -583,12 +621,12 @@ def do_ask(message, history, chunks, index, top_k):
         raise gr.Error("Please build the index first.")
 
     if (pdf_folder=="Phone Directory"):
-        prompt = build_prompt_json(message, output_prompt=output_prompt)
+        prompt = build_prompt_json(message, output_prompt=output_prompt, surname_template=surname_template, givenname_template=givenname_template)
         json_answer = generate_answer_json(prompt, client, model_name=GEN_MODEL2)
     else:
         hits = retrieve(message, index, chunks, client, k=int(top_k), model_name=EMBED_MODEL)
         contexts = [h[0] for h in hits]
-        prompt = build_prompt(message, contexts, output_prompt=output_prompt)
+        prompt = build_prompt(message, contexts, output_prompt=output_prompt, surname_template=surname_template, givenname_template=givenname_template)
         rag_answer = generate_answer(prompt, client, model_name=GEN_MODEL)
     
     if language_selected == "Chinese":
