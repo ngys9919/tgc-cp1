@@ -327,6 +327,14 @@ def givenname_change(givenname):
         givenname_template = "Yew Seng"
     return
 
+heifinance_app_html = """
+                    <div style='height: 100px; width: 400px; background-color: pink; color: red; margin: auto; border-radius: 10px;'>
+                        <h1 style='text-align: center; padding-top: 30px; font-size: 20px;'>
+                        <p class="first-letter">📄<b style='color: blue; margin-left: 3px'>HeiFinance Bank <span style="font-variant: small-caps; font-size: 4vh; color: red;">Q&A</span> Chatbot</b></p>
+                        </h1>
+                    </div>
+                    """
+
 def render_ui():
     # --- UI (Gradio v5) ---
     with gr.Blocks(theme=gr.themes.Soft(primary_hue="blue", secondary_hue="emerald"), css=custom_css, title="HeiFinance Bank") as demo:
@@ -337,15 +345,9 @@ def render_ui():
                 # gr.Image(logo_url, width=150, height=150, scale=1, min_width=0) # min_width=0 prevents it from being stuck at the default min size
                 gr.Image(logo_url, elem_classes=["full-size-image"], scale=0) # scale=0 takes up 0 units of space (minimum width), making it narrower
 
-                gr.HTML("""
-                    <div style='height: 100px; width: 400px; background-color: pink; color: red; margin: auto; border-radius: 10px;'>
-                        <h1 style='text-align: center; padding-top: 30px; font-size: 20px;'>
-                        <p class="first-letter">📄<b style='color: blue; margin-left: 3px'>HeiFinance Bank <span style="font-variant: small-caps; font-size: 4vh; color: red;">Q&A</span> Chatbot</b></p>
-                        </h1>
-                    </div>
-                """)
+                gr.HTML(heifinance_app_html)
 
-            with gr.Accordion("Personal Name Details: (collapsible)"):
+            with gr.Accordion("Personal Name Details as Responder for Draft Email : (collapsible)"):
                 with gr.Group():
                     with gr.Row():
                         # surname = gr.Textbox(label="Surname", scale=1, value="Ng")
@@ -398,14 +400,9 @@ def render_ui():
             # gr.Markdown("## 📄 PDF Q&A (Gemini + FAISS) — minimal Gradio v5")
 
             # gr.Markdown("<h1 style='text-align: center;'> 📄 **HeiFinance Bank Q&A Chatbot** </h1>")
-            gr.HTML("""
-                <div style='height: 100px; width: 400px; background-color: pink; color: red; margin: auto; border-radius: 10px;'>
-                    <h1 style='text-align: center; padding-top: 30px; font-size: 20px;'>
-                    <p class="first-letter">📄<b style='color: blue; margin-left: 3px'>HeiFinance Bank <span style="font-variant: small-caps; font-size: 4vh; color: red;">Q&A</span> Chatbot</b></p>
-                    </h1>
-                </div>
-            """)
             
+            gr.HTML(heifinance_app_html)
+
             gr.Markdown("### Step 0: Please choose the Chat Language from 'Dropdown Menu' and click 'Submit Chat Language' button.")
             gr.Markdown("## The Default Chat Language is <span style='color: blue;'>English</span>")
 
@@ -537,6 +534,7 @@ def render_ui():
                 <h2 style="text-align: center; font-size: 3vh;">Copyright 2025 &#169; Trent Global College</h2>
                 <h2 style="text-align: center; font-size: 3vh;">All Rights Reserved </h2>
                 <h2>Batch: <span style="font-variant: small-caps; font-size: 4vh; color: blue;">Part of FSD - Run 8 Cohort (Part-Time)</span></h2>
+                <h2 style="color: blue;">Module: <span style="font-variant: common-ligatures; font-size: 4vh; color: red;">Problem Solving for IT Professionals (with Generative AI)</span></h2>
                 <div class="css-box-model box box-border">
                     <strong>Python+AI Capstone Project</strong> This project is a web chatbot application that specialized in answering questions related to the HeiFinance Bank documents 
                     <wbr>(currently implemented for Annual Report, Bank Products, Employee Handbook, Organisation Chart, and Phone Directory)
