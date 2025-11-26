@@ -56,9 +56,11 @@ TGC-CP1/   # Project Root
 │── doc/
 │   ├── Problem Solving for IT Professionals PP.docx.pdf  # Assessment 
 │── img/
-│   ├── heifinance-home-pg1.png  # 
-│   ├── heifinance-home-pg2.png  #
-│   ├── heifinance-home-pg3.png  # 
+│   ├── heifinance-home.png  #
+│   ├── heifinance-about.png  #
+│   ├── heifinance-chatbot-pg1.png  # 
+│   ├── heifinance-chatbot-pg2.png  #
+│   ├── heifinance-chatbot-pg3.png  # 
 │   ├── heifinance-step0.png  #
 │   ├── heifinance-step1-chat-query.png  # 
 │   ├── heifinance-step1-draft-email.png  #
@@ -114,19 +116,7 @@ This project is about a simple *Generative AI Tool* at **HeiFinance Bank** using
 
 This simple web software is a chatbot specializing in answering questions related to the HeiFinance documents (currently implemented for Annual Report, Bank Products, Employee Handbook, Organisation Chart, and Phone Directory) and gracefully declines queries outside this domain.
 
-It provides components using Gradio interface for user inputs using chatbot queries in order to obtain answers using simple RAG system for selecting a PDF file format document and an pre-defined JSON file format. It begins with 5-steps process as follows:
-
-**Step 0:** Please choose the Chat Language from 'Dropdown Menu' and click 'Submit Chat Language' button.
-
-**Step 1:** Please choose the Chat Category from 'Radio' button and select your Output Type.
-
-**Step 2:** Please click 'Build Index' button to start.
-
-**Step 3:** Please type your query in the Textbox below.
-
-**Step 4 (optional):** To clear conversations, click 'Clear HeiFinance Chatbox' button.
-
-<h1 style='text-align: center; color: red; !important'>IMPORTANT NOTICE:</h1> <h2 style='text-align: center; color: blue; !important'>To clear error message, click 'Clear HeiFinance Chatbox OR Reset Error' button.</h2>
+It provides components using Gradio interface for user inputs using chatbot queries in order to obtain answers using simple RAG system for selecting a PDF file format document and an pre-defined JSON file format. 
 
 ![HeiFinance: Home Page](img/heifinance-home.png "Landing Page")
 
@@ -241,32 +231,61 @@ and the Gemini Model adopted for JSON (because we need code execution capability
 
 **GEN_MODEL2** = *"gemini-2.5-flash"*
 
+> Home page:
+1. Instructions (5-Steps Process) tab - to startup landing page with instructions, which here aka Home page
+2. Chatbot tab - to use HeiFinance Q&A Chatbot Tool
+3. About tab - to display the credits information
+
+> Chatbot page:
+
+It begins with 5-steps process as follows:
+
+**Step 0:** Please choose the Chat Language from 'Dropdown Menu' and click 'Submit Chat Language' button.
+
+**Step 1:** Please choose the Chat Category from 'Radio' button and select your Output Type.
+
+**Step 2:** Please click 'Build Index' button to start.
+
+**Step 3:** Please type your query in the Textbox below.
+
+**Step 4 (optional):** To clear conversations, click 'Clear HeiFinance Chatbox' button.
+
+<h1 style='text-align: center; color: red; !important'>IMPORTANT NOTICE:</h1> <h2 style='text-align: center; color: blue; !important'>To clear error message, click 'Clear HeiFinance Chatbox OR Reset Error' button.</h2>
+
+> About page:
+
+To display the credits information such as coder, copyright, training provider and the capstone project itself.
+
 <!-- Heading level 3 -->
 ### Existing Features
-
+Current implementation is a proof-of-concept chatbot with a Gradio web interface using Retrieval-Augmented Generation (RAG) pipeline to provide accurate, context-aware answers from a custom knowledge base of pdf documents (in the use cases of Bank Products, Employee Handbook, etc.) and json table (in the use case of Phone Directory). However, for the use case of Annual Report, it is harder to do it since it contains texts, tables and may be images, this calls for Multi-Modal RAG (which is the current research topics). It ustilised AI models from Google AI Studio to enable the system to query specific documents and significantly reduce manual search efforts and less error-prone (although sometimes LLM does have a hallucination problem).
 
 
 <!-- Heading level 3 -->
 ### Future Implementation
+Future implementaion could include a full Multi-Modal RAG System (that takes in all sources of digital media) and a real full-stack web development using MERN tech stack (instead of relying on Gradio for quick prototyping). The embeddings could be moved to Vector Database like Pinecone (instead of need to Build Index every time in each restart of the web chatbot app). The chatbox history (now it is based on short-term memory) could be moved to persistent storage like (SQL or NoSQL Database) instead of loss every time it is restarted.
 
 
 <!-- Heading level 2 -->
 ## Testing
- 
 
-### Testing A: Annual Report
 
-# Upload a PDF file first, say HeiFinance_Annual_Report_2025.pdf
+## Testing A: Annual Report
 
-# Prompt Examples:
+> Select Chat Category -> Annual Report, which chooses HeiFinance_Annual_Report_2025.pdf
+
+### Prompt Examples:
 
 ## Query 1: Could you comment on the company performance?
 
-### HeiFinance Group demonstrated robust growth and strategic execution in the fiscal year [REDACTED], with a record Net Profit of SGD [REDACTED] billion, a significant [REDACTED]% increase from the previous year. This performance is attributed to operational excellence and prudent risk management. The company's success was driven by three key strategic pillars: Digital Transformation, Regional Connectivity, and Sustainable Finance. Their digital transformation efforts led to a [REDACTED]% increase in digitally active customers and a [REDACTED]% reduction in the cost-to-income ratio. Regional connectivity initiatives contributed to a [REDACTED]% rise in fee income from cross-border transactions. Furthermore, the issuance of their inaugural Green Bond, raising SGD [REDACTED] million, highlights their commitment to sustainable finance. The Group maintained a healthy balance sheet and robust capital adequacy, positioning them for continued expansion.
+```markdown
+HeiFinance Group demonstrated robust growth and strategic execution in the fiscal year [REDACTED], with a record Net Profit of SGD [REDACTED] billion, a significant [REDACTED]% increase from the previous year. This performance is attributed to operational excellence and prudent risk management. The company's success was driven by three key strategic pillars: Digital Transformation, Regional Connectivity, and Sustainable Finance. Their digital transformation efforts led to a [REDACTED]% increase in digitally active customers and a [REDACTED]% reduction in the cost-to-income ratio. Regional connectivity initiatives contributed to a [REDACTED]% rise in fee income from cross-border transactions. Furthermore, the issuance of their inaugural Green Bond, raising SGD [REDACTED] million, highlights their commitment to sustainable finance. The Group maintained a healthy balance sheet and robust capital adequacy, positioning them for continued expansion.
+```
 
 ## Query 2: Who are in the board of directors?
 
-### The board of directors consists of:
+```markdown
+The board of directors consists of:
 
 Mr. Lim Siong Guan (Chairman, Independent Non-Executive Director)
 Mr. Kenji Tan (Group Chief Executive Officer, Executive Director)
@@ -274,33 +293,39 @@ Ms. Grace Chen (Lead Independent Director)
 Dr. Ravi Menon (Independent Non-Executive Director)
 Ms. Tan Hwee Ling (Independent Non-Executive Director)
 Mr. Michael Wong (Non-Executive Director)
+```
 
 ## Query 3: What are the key financial highlights for the year 2025?
 
-### I don't know.
+```markdown
+I don't know.
+```
 
+## Testing B: Bank Products
 
-### Testing B: Bank Products
+> Select Chat Category -> Bank Products, which chooses HeiFinance Bank Product Fact Sheet.pdf
 
-# Upload a PDF file first, say HeiFinance Bank Product Fact Sheet.pdf
-
-# Prompt Examples:
+### Prompt Examples:
 
 ## Query 1: What is the minimum deposit for heifinance saving plus account?
 
-### The minimum deposit requirement for the HeiFinance SavingsPlus Account is SGD 500.
+```markdown
+The minimum deposit requirement for the HeiFinance SavingsPlus Account is SGD 500.
+```
 
 ## Query 2: Hi, can you tell me what the minimum deposit is for the heifinance savingsplus account and whether i can get bonus interest if i only spend $400 monthly on my credit card?
 
-### The minimum deposit requirement for the HeiFinance SavingsPlus Account is SGD 500.
+```markdown
+The minimum deposit requirement for the HeiFinance SavingsPlus Account is SGD 500.
 
-### To receive bonus interest for eligible debit or credit card spending, a minimum of SGD 500 needs to be spent monthly. Therefore, if you only spend $400 monthly on your credit card, you would not qualify for this specific bonus interest component.
+To receive bonus interest for eligible debit or credit card spending, a minimum of SGD 500 needs to be spent monthly. Therefore, if you only spend $400 monthly on your credit card, you would not qualify for this specific bonus interest component.
+```
 
 ## Query 3: How much cashback on the visa platinum card can i get if i spend 1000 on groceries, 800 on dining and 900 on online purchases?
 
-### To calculate the cashback, we need to break down the spending according to the card's rewards program.
-
 ```markdown
+To calculate the cashback, we need to break down the spending according to the card's rewards program.
+
 Groceries and Dining: These categories earn 3% cashback.
 Total spent on groceries and dining = SGD 1000 + SGD 800 = SGD 1800
 Cashback on groceries and dining = 3% of SGD 1800 = SGD 54
@@ -312,16 +337,16 @@ The monthly cashback cap is SGD 80. Since SGD 63 is below this cap, the total ca
 
 ## Query 4: What is the difference between floating and fixed loan rate offered by heifinance?
 
-### The HeiFinance HomeFlex Loan offers two packages: a Fixed Rate Package and a Floating Rate Package.
-
 ```markdown
-### Fixed Rate Package:
+The HeiFinance HomeFlex Loan offers two packages: a Fixed Rate Package and a Floating Rate Package.
+
+Fixed Rate Package:
 
 The interest rate is fixed for the first 3 years.
 After this fixed period, the rate reverts to the HeiFinance Board Rate (currently 3.5% p.a.) minus a customer discount.
 This package provides certainty in monthly installments, making it suitable for customers who prefer predictability.
 
-### Floating Rate Package:
+Floating Rate Package:
 
 The interest rate is pegged to 3M SORA plus a spread ranging between 0.80% and 1.20%.
 The rates reset quarterly according to SORA movement.
@@ -330,67 +355,86 @@ This package is suitable for customers who are comfortable with fluctuations in 
 
 ## Query 5: If i refinance my existing mortgage, what is my estimated monthly repayment under the homeflex loan floating package?
 
-### I don't know. The provided context does not contain information about the estimated monthly repayment for refinancing an existing mortgage under the HomeFlex Loan floating package. It does mention that the Floating Rate Package is pegged to 3M SORA plus a spread ranging between 0.80% and 1.20%, and rates reset quarterly [Source 1, Source 2]. There is also a refinancing subsidy of up to SGD 2,000 for legal and valuation fees for refinancing customers.
+```markdown
+I don't know. The provided context does not contain information about the estimated monthly repayment for refinancing an existing mortgage under the HomeFlex Loan floating package. It does mention that the Floating Rate Package is pegged to 3M SORA plus a spread ranging between 0.80% and 1.20%, and rates reset quarterly [Source 1, Source 2]. There is also a refinancing subsidy of up to SGD 2,000 for legal and valuation fees for refinancing customers.
+```
 
+## Testing C: Employee Handbook
 
-### Testing C: Employee Handbook
-# Upload a PDF file first, say HeiFinance_Employee_Handbook.pdf
+> Select Chat Category -> Employee Handbook, which chooses HeiFinance_Employee_Handbook.pdf
 
-# Prompt Examples:
+### Prompt Examples:
 
 ## Query 1: Can you summarize the content of the uploaded PDF?
 
-### The provided PDF is the HeiFinance Employee Handbook. It outlines terms and conditions of employment, policies, procedures, and standards of conduct. It clarifies that the handbook is a guide and not an employment contract, with the Letter of Appointment or Singapore Employment Act prevailing in case of conflicts. The handbook also covers probationary periods, termination of service and resignation, involuntary termination/dismissal, appointment procedures including pre-employment checks and work pass requirements, and company rights regarding job assignments. It also touches upon policies concerning non-competition and the usage of internet and electronic mail. The management reserves the right to revise these policies.
+```markdown
+The provided PDF is the HeiFinance Employee Handbook. It outlines terms and conditions of employment, policies, procedures, and standards of conduct. It clarifies that the handbook is a guide and not an employment contract, with the Letter of Appointment or Singapore Employment Act prevailing in case of conflicts. The handbook also covers probationary periods, termination of service and resignation, involuntary termination/dismissal, appointment procedures including pre-employment checks and work pass requirements, and company rights regarding job assignments. It also touches upon policies concerning non-competition and the usage of internet and electronic mail. The management reserves the right to revise these policies.
+```
 
 ## Query 2: What are the key points discussed in the document?
 
-### The document discusses the introduction to the HeiFinance Employee Handbook, including its purpose and disclaimers. It also covers terms of employment such as probationary periods and termination of service, including notice periods and resignation procedures. Additionally, it addresses policies on non-competition, internet and electronic mail usage, and non-disclosure of information. The handbook also mentions a whistle-blowing program.
+```markdown
+The document discusses the introduction to the HeiFinance Employee Handbook, including its purpose and disclaimers. It also covers terms of employment such as probationary periods and termination of service, including notice periods and resignation procedures. Additionally, it addresses policies on non-competition, internet and electronic mail usage, and non-disclosure of information. The handbook also mentions a whistle-blowing program.
+```
 
 ## Query 3: Can you explain the main arguments presented in the PDF?
 
-### I don't know.
+```markdown
+I don't know.
+```
 
 ## Query 4: What is the working hours?
 
-### The standard working week for all non-shift employees is 40 hours over 5 working days, Monday to Friday. General office hours are 9:00 AM to 6:00 PM with a 1-hour lunch break. The lunch break is from 1:00 PM to 2:00 PM. Specific departments, particularly those in front-office, trading, or operations roles, may have different working hours or shift arrangements, which will be specified in the Letter of Appointment or departmental guidelines.
+```markdown
+The standard working week for all non-shift employees is 40 hours over 5 working days, Monday to Friday. General office hours are 9:00 AM to 6:00 PM with a 1-hour lunch break. The lunch break is from 1:00 PM to 2:00 PM. Specific departments, particularly those in front-office, trading, or operations roles, may have different working hours or shift arrangements, which will be specified in the Letter of Appointment or departmental guidelines.
+```
 
 ## Query 5: What is the procedure for handling complaints?
 
-### I don't know.
+```markdown
+I don't know.
+```
 
 ## Query 6: What is the company's policy on outside employment?
 
-### Employees are expected to dedicate their full working time and attention to the company. They are not allowed to take on outside employment, business, or professional activities that could create a conflict of interest or hinder their ability to perform their duties effectively. Any outside employment must be declared to and approved in writing by the Head of Human Resources and the Department Head. This approval can be revoked at any time.
+```markdown
+Employees are expected to dedicate their full working time and attention to the company. They are not allowed to take on outside employment, business, or professional activities that could create a conflict of interest or hinder their ability to perform their duties effectively. Any outside employment must be declared to and approved in writing by the Head of Human Resources and the Department Head. This approval can be revoked at any time.
+```
 
-### Testing D: Organisation Chart
+## Testing D: Organisation Chart
 
-# Upload a PDF file first, say HeiFinance_Organization_Chart_Executive_Summary.pdf
+> Select Chat Category -> Organisation Chart, which chooses HeiFinance_Organization_Chart_Executive_Summary.pdf
 
-# Prompt Examples:
+### Prompt Examples:
 
 ## Query 1: Who is the CEO and CFO?
 
-### The CEO is Kenji Tan and the CFO is Li Wei.
+```markdown
+The CEO is Kenji Tan and the CFO is Li Wei.
+```
 
 ## Query 2: How many country heads are there and who are they?
 
-### There are six country heads: Lim Hock Chuan (Singapore), Jing Li (China), William Chan (Hong Kong), Siti Nurhaliza (Malaysia), Somchai Boonruang (Thailand), and Budi Santoso (Indonesia).
+```markdown
+There are six country heads: Lim Hock Chuan (Singapore), Jing Li (China), William Chan (Hong Kong), Siti Nurhaliza (Malaysia), Somchai Boonruang (Thailand), and Budi Santoso (Indonesia).
+```
 
+## Testing E: Phone Directory
 
-### Testing E: Phone Directory
+> Select Chat Category -> Phone Directory, which chooses HeiFinance_Full_Directory_Complete.pdf -> heifinance_tables-formatted.json
 
-# Upload a PDF file first, say HeiFinance_Full_Directory_Complete.pdf -> heifinance_tables-formatted.json
+### Basic Information:
 
-# Basic Information:
-
-Length of All Employees Names: 128
-Length of Unique Names: 122
-Total number of employees from Singapore: 74
+Length of All Employees Names: 128\
+Length of Unique Names: 122\
+Total number of employees from Singapore: 74\
 Length of Repeated Names (in Singaopore employees): 6
 
-Repeated Names (in Singapore employees): ['Linda Tan', 'Marcus Sharma', 'James Poh', 'Sarah Wong', 'Chloe Ooi', 'Rajeev Lim']
+Repeated Names (in Singapore employees):
 
-# Prompt Examples:
+['Linda Tan', 'Marcus Sharma', 'James Poh', 'Sarah Wong', 'Chloe Ooi', 'Rajeev Lim']
+
+### Prompt Examples:
 
 ## Query 1: Please retrieve the details for CFO and the names for staff working in Singapore. Count the number of Singapore staff.
 
@@ -484,7 +528,7 @@ Names of Staff Working in Singapore:
 * James Ng
 * Lim Lim
 
-### Total Number of Staff Working in Singapore: 74
+Total Number of Staff Working in Singapore: 74
 ```
 
 ## Query 2: Could you count the number of total employees in the phone directory? Show how you do the calculation.
@@ -579,26 +623,30 @@ Names of Staff Working in Singapore:
 {'EmployeeID': 126, 'Name': 'David Yap', 'Job Title': 'PR Specialist - Communications', 'Department': 'Communications', 'Contact': '+65-6789-0208', 'Email': 'david.yap@heifinance.com', 'Office Location': 'Marina Bay Tower', 'Country': 'Singapore'}
 {'EmployeeID': 127, 'Name': 'James Ng', 'Job Title': 'CX Manager - Customer Experience', 'Department': 'Customer Experience', 'Contact': '+65-6789-0209', 'Email': 'james.ng@heifinance.com', 'Office Location': 'Marina Bay Tower', 'Country': 'Singapore'}
 {'EmployeeID': 128, 'Name': 'Lim Lim', 'Job Title': 'CX Specialist - Customer Experience', 'Department': 'Customer Experience', 'Contact': '+65-6789-0210', 'Email': 'lim.lim@heifinance.com', 'Office Location': 'Marina Bay Tower', 'Country': 'Singapore'}
+
+The count of employees with 'Country': 'Singapore' is 74.
 ```
 
-### The count of employees with 'Country': 'Singapore' is 74.
+## Testing: Draft Email
 
+> Select Chat Category -> Bank Products, which chooses HeiFinance Bank Product Fact Sheet.pdf
 
-### Testing: Draft Email
+> Select Output Type -> Draft Email, which uses Personal Name Details as Responder for Draft Email
 
-# Upload a PDF file first, say HeiFinance Bank Product Fact Sheet.pdf
-
-# Prompt Examples:
+### Prompt Examples:
 
 ## Query 1:
 
+```markdown
 What is the minimum deposit for SavingsPlus?
 
 Best regards,
 Eric Andrew.
+```
 
 ### Draft Email 1:
 
+```markdown
 Dear Eric Andrew,
 
 Thank you for reaching out to HeiFinance Bank.
@@ -616,17 +664,20 @@ Warm regards,
 Ng Yew Seng
 Customer Service Officer
 HeiFinance Bank
-
+```
 
 ## Query 2:
 
+```markdown
 If I refinance my existing mortgage, what is my estimated monthly repayment under the HomeFlex Loan floating package?
 
 Best regards,
 Eric Andrew.
+```
 
 ### Draft Email 2:
 
+```markdown
 Dear Eric Andrew,
 
 Thank you for reaching out to HeiFinance Bank.
@@ -645,16 +696,20 @@ Warm regards,
 Ng Yew Seng
 Customer Service Officer
 HeiFinance Bank
+```
 
 ## Query 3:
 
+```markdown
 Hi, can you tell me what the minimum deposit is for the HeiFinance SavingsPlus Account, and whether I can get bonus interest if I only spend $400 monthly on my credit card?
 
 Yours sincerely,
 Eric Andrew.
+```
 
 ### Draft Email 3:
 
+```markdown
 Dear Eric Andrew,
 
 Thank you for reaching out to HeiFinance Bank.
@@ -672,19 +727,22 @@ Warm regards,
 Ng Yew Seng
 Customer Service Officer
 HeiFinance Bank
-
+```
 
 ## Query 4:
 
+```markdown
 Dear CSO,
 
 How much cashback on the visa platinum card can i get if i spend 1000 on groceries, 800 on dining and 900 on online purchases?
 
 Yours sincerely,
 Irene
+```
 
 ### Draft Email 4:
 
+```markdown
 Dear Irene,
 
 Thank you for reaching out to HeiFinance Bank.
@@ -703,18 +761,22 @@ Warm regards,
 Ng Yew Seng
 Customer Service Officer
 HeiFinance Bank
+```
 
 ## Query 5:
 
+```markdown
 TO WHOM IT MAY CONCERN:
 
 What is the difference between floating and fixed loan rate offered by heifinance?
 
 Warm regards,
 David.
+```
 
 ### Draft Email 5:
 
+```markdown
 Dear David,
 
 Thank you for reaching out to HeiFinance Bank.
@@ -732,7 +794,7 @@ Warm regards,
 Ng Yew Seng
 Customer Service Officer
 HeiFinance Bank
-
+```
 
 
 <!-- Heading level 2 -->
@@ -742,6 +804,17 @@ HeiFinance Bank
 - The .ico file used for this website was converted from .png logo file with this site:
 
   https://www.freeconvert.com/png-to-ico
+
+- Heicoders Academy for this document, which I make used of the name HeiFinance Bank for my capstone project:
+  
+  * HeiFinance Bank Product Fact Sheet.pdf
+
+- Manus AI for the synthetic generation of the other documents using its General AI Agent such as:
+
+  * HeiFinance_Annual_Report_2025.pdf
+  * HeiFinance_Employee_Handbook.pdf
+  * HeiFinance_Organization_Chart_Executive_Summary.pdf
+  * HeiFinance_Full_Directory_Complete.pdf
 
 ### Acknowledgements
 Thanks to Trent Global College for support!
