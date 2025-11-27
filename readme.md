@@ -37,13 +37,13 @@ Part 1:\
 **Environment Setup**: Using environment variables to securely store sensitive information like API Keys.
 
 Part 2:\
-**Integrating Gemini LLM**: Leveraging Google's Gemini LLM to generate inteligent responses.
+**Integrating Gemini LLM**: Leveraging Google's Gemini LLM to generate intelligent responses.
 
 Part 3:\
 **Gradio Interface**: Creating an intuitive user interface for interacting with the chatbot.
 
 Part 4:\
-**Specialization**: Training the LLM, ensuring the chatbot sticls to its domain expertise.
+**Specialization**: Training the LLM, ensuring the chatbot sticks to its domain expertise.
 
 
 
