@@ -90,7 +90,8 @@ TGC-CP1/   # Project Root
 │   ├── app.py  # Gradio App for HeiFinance Q&A Chatbot
 │   ├── gemini_utils.py  # Gemini AI model helper functions
 │── .gitignore  # Ignore for Git push
-│── .env  # Environment variables for the project
+│── .env  # Environment variables for the project (actual use case, hidden)
+│── .env.sample  # Environment variables for the project (sample example)
 ├── extract_tables_robust.py  # Document Converter from PDF to JSON format
 ├── hei_tables.json  # Converted JSON file format (from HeiFinance_Full_Directory_Complete.pdf)
 │── requirements.txt  # Dependencies for the project
@@ -107,14 +108,14 @@ For the purpose of the portfolio project, a frontend Gradio application with Gen
 
 ```json
 {
-1. "HeiFinance Generative AI Tool" : in our case "HeiFinance Bank Q&A Chatbot"
+1. "HeiFinance Bank Generative AI Tool" : in our case "HeiFinance Bank Q&A Chatbot"
 }
 ```
 
 This project is about a simple *Generative AI Tool* at **HeiFinance Bank** using the concepts we learned in the Python + AI course as part of the module Problem Solving for IT Professionals (with Generative AI) for SCTP BELLS FSD - Run 8 Cohort (Part-Time).
 
 
-This simple web software is a chatbot specializing in answering questions related to the HeiFinance documents (currently implemented for Annual Report, Bank Products, Employee Handbook, Organisation Chart, and Phone Directory) and gracefully declines queries outside this domain.
+This simple web software is a chatbot specializing in answering questions (with 2 output types, namely: Chat Query and Draft Email) related to the HeiFinance Bank documents (currently implemented for Annual Report, Bank Products, Employee Handbook, Organisation Chart, and Phone Directory) and gracefully declines queries outside this domain.
 
 It provides components using Gradio interface for user inputs using chatbot queries in order to obtain answers using simple RAG system for selecting a PDF file format document and an pre-defined JSON file format. 
 
