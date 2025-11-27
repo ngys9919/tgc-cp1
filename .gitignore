@@ -1,5 +1,4 @@
 .env
 venv
-doc
+.doc
 .gradio
-# doc/Problem Solving for IT Professionals PP.docx.pdf
